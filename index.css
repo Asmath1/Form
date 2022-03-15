@@ -60,9 +60,9 @@ label{
     height: 40px;
     padding: 10px;
     border-radius: 7px;
-    background-color:black;
-    color:solid  green;
-    border: solid white 1px;
+    background-color:white;
+    color:solid  black;
+    border: solid black 1px;
     
 }
 
@@ -84,4 +84,8 @@ label{
 
 .login{
     padding-top: 10px;
+}
+
+.error-message{
+    color:maroon;
 }
