@@ -67,12 +67,15 @@ function validate(event) {
         _(id).innerHTML = message;
     }
 
+
+
+
     function numberValidation(value,id){
         if(!value) {
             setError(id, "Please enter your phone number");
             return;
         } 
-         if (!value.length=) {
+         if (!value.length<10) {
             setError(id, "phone number must be 10 digits");
             return;
         }
