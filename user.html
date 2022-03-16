@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>User</h1>
+    <p>
+        Name : <span id="name">
+
+        </span>
+    </p>
+    
+    <p>
+        user name : <span id="username">
+            
+        </span>
+    </p><p>
+        Email: <span id="email">
+            
+        </span>
+    </p>
+    
+    <script>
+        function _(id)
+    {
+        return document.getElementById(id);
+    }
+    var url = new URL(location.href);
+    var id = url.searchParams.get("id");
+
+    // const getRequest= (url)=> new Promise((resolve,reject)=>{     // promise->constructor - resolve/reject
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.onreadystatechange = () =>{                           //onreadystatechange-event
+    //         if(xhr.readyState===4 && xhr.status==200){            //xhr-object
+    //             resolve(JSON.parse(xhr.responseText));            //output
+    //         }else if(this.readyState===4){
+    //             reject(xhr.statusText);
+    //         }
+            
+    //     }
+
+    //     xhr.open("GET",url,true);
+    //     xhr.send();
+    // });
+
+    // getRequest("http://192.168.1.39:3000/user/"+id).then((data)=>{
+    //      _("name").innerHTML = data.name;
+    //      _("username").innerHTML =data.username;
+    //      _("email").innerHTML = data.email;
+    //     }).catch((err)=>{
+    //         console.log(err);
+    //     });      
+        
+// const Fetch= (...params)=>fetch(...params).then(res=>res.json());       //wrapper function,RESPONSE BUFFER(binary)
+
+    fetch("http://192.168.1.39:3000/user/"+id)
+    .then(res=>res.json())                                                   //json-buffer convert to json
+    .then((data)=>{
+         _("name").innerHTML = data.name;
+         _("username").innerHTML =data.username;
+         _("email").innerHTML = data.email;
+        }).catch((err)=>{
+            console.log(err);
+        }); 
+    
+
+    
+    // var xhttp = new XMLHttpRequest();
+    // xhttp.onreadystatechange = function(){
+    //     if(this.readyState===4 && this.status===200)
+    //     {
+    //         var result = JSON.parse(this.responseText);
+    //         _("name").innerHTML = result.name;
+    //         _("username").innerHTML = result.username;
+    //         _("email").innerHTML = result.email;
+    //     }
+    // };
+    // xhttp.open("GET","http://192.168.1.39:3000/user/"+id,true);
+    // xhttp.send();
+
+    </script>
+
+</body>
+</html>

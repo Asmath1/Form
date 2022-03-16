@@ -17,29 +17,75 @@ function validate(event) {
     var password =formData.get("password");
     var confirmPassword =formData.get("confirmPassword");
     var phone =formData.get("phone");
-    nameValidation(name, "name-error");
-    emailValidation(email, "email-error");
-    numberValidation(phone, "number-error");
+    if(
+        nameValidation(name, "name-error") &&
+        usernameValidation(username,"username-error") &&
+        emailValidation(email, "email-error") &&
+        numberValidation(phone, "number-error") &&
+        passwordValidation(password, "password-error") &&
+        confirmPasswordValidation(confirmPassword, password, "confirmPassword-error")
+        )
+{
+    
+   submit({
+    name,
+    username,
+    email,
+    phone,
+    password,
+    });
+    } 
+    else {
+        console.log("Failed");
     }
+}
 
+    function submit (data){
+        let postRequest = function (url, data) {
+        return new Promise(function(resolve,reject){
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function (){
+            if(this.readyState === 4 && this.status ==201){
+                resolve(JSON.parse(this.responseText));
+            }else if (this.readyState == 4) {
+                reject(JSON.parse(this.responseText || "error"));
+            }
+                
+        };
+    xhttp.open("POST", url,true);
+    xhttp.setRequestHeader("content-type", "application/JSON");
+    xhttp.send(JSON.stringify(data));
+        });
+
+    };
+
+    postRequest("http://192.168.1.39:3000/user", data)
+    .then((result) =>{
+        window.location.href = "./user.html?id=" + result.id;
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
+}
 
     function nameValidation(value,id){
-        isEmptyOrShort(value, id, 3, "Name");
+        return !isEmptyOrShort(value, id, 3 , "Name ");
     }    
 
     function isEmptyOrShort(value, id,minlength, key)
     {
         if(!value) {
             setError(id, "Please enter your " + key);
-            return;
+            return true;
         }
         if (value.length<minlength) {
-            setError(id, key + "must be at least" + minlength + "characters");
-            return;
+            setError(id, key + "must be at least " + minlength + " characters");
+            return true;
         }
         setError(id, "");
+        return false;
     }
-
+    //function(){
     // if(!name) {
     //     _("name-error").innerHTML = "Please enter your name";
     // }
@@ -48,37 +94,44 @@ function validate(event) {
     // }
 
 
-
-
     function emailValidation(value,id){
         if(!value) {
             setError(id, "Please enter your email");
-            return;
+            return false;
         } 
-         if (!value.includes("@")) {
+         if(!value.includes("@")) {
             setError(id, "Please enter a valid email");
-            return;
+            return false;
         }
         setError(id, "");
+        return true;
     }
 
-    function setError(id, message) {
-
-        _(id).innerHTML = message;
+    function usernameValidation(value,id){
+        return !isEmptyOrShort(value, id, 4 , "username ");
     }
-
-
-
 
     function numberValidation(value,id){
-        if(!value) {
-            setError(id, "Please enter your phone number");
-            return;
-        } 
-         if (!value.length<10) {
-            setError(id, "phone number must be 10 digits");
-            return;
-        }
-        setError(id, "");
+       return !isEmptyOrShort(value, id, 10 , "Phone number ");
+    }    
+
+
+    function passwordValidation(value,id){
+       return !isEmptyOrShort(value, id, 6, "password ");
     }
 
+
+    function confirmPasswordValidation(value,password,id){
+        if(value !== password){
+            setError(id, "Password does not match");
+            return false;
+        }
+       setError(id, "");
+       return true;
+    }
+
+    
+
+    function setError(id, message) {
+        _(id).innerHTML = message;
+    }
