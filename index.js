@@ -1,16 +1,18 @@
-window.addEventListener("load",main);
+//JQUERY 
+
+$(document).ready(main);
 
 function _(id) {
     return document.getElementById(id);
 }
 
 function main(){
-    _("signup-form").addEventListener("submit",validate);
+    $("#signup-form").submit(validate);
 }
 
 function validate(event) {
     event.preventDefault();
-    var formData = new FormData(event.target);
+    var formData = new FormData($(this)[0]);
     var name= formData.get("name");
     var username = formData.get("username");
     var email = formData.get("email");
@@ -66,7 +68,7 @@ function validate(event) {
                 },
             body:JSON.stringify(data),
             })
-            .then((response)=>esponse.json())
+            .then((response)=>response.json())
             .then((result) =>{
         window.location.href = "./user.html?id=" + result.id;
     })
@@ -94,14 +96,6 @@ function validate(event) {
         setError(id, "");
         return false;
     }
-    //function(){
-    // if(!name) {
-    //     _("name-error").innerHTML = "Please enter your name";
-    // }
-    // if(name.length<3){
-    //     _("name-error").innerHTML = "Name must be at least 3 characters";
-    // }
-
 
     function emailValidation(value,id){
         if(!value) {
@@ -142,5 +136,5 @@ function validate(event) {
     
 
     function setError(id, message) {
-        _(id).innerHTML = message;
+        $("#" +id).text(message);
     }
